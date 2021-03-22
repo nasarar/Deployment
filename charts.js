@@ -34,6 +34,7 @@ function optionChanged(newSample) {
 function buildMetadata(sample) {
   d3.json("samples.json").then((data) => {
     var metadata = data.metadata;
+
     // Filter the data for the object with the desired sample number
     var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
     var result = resultArray[0];
@@ -59,15 +60,30 @@ function buildCharts(sample) {
   d3.json("samples.json").then((data) => {
     // 3. Create a variable that holds the samples array. 
     var samples = data.samples;
+
+    //creates an array of the metadata for the freq gauge chart
+    var metaFrequency = data.metadata;
+
     // 4. Create a variable that filters the samples for the object with the desired sample number.
     var samplesArray = samples.filter(sampleObj => sampleObj.id == sample); 
+
+    //grabs the id of the selected filter for the gauge freq chart
+    var metadataArray = metaFrequency.filter(sampleObj => sampleObj.id == sample);
+
     //  5. Create a variable that holds the first sample in the array.
     var samples = samplesArray[0];
+    
+    // creates another variable to hold first sample in the metadata for the array
+    var sampleMetadata = metadataArray[0];
+
 
     // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
     var otu_ids = samples.otu_ids;
     var otu_labels = samples.otu_labels;
     var sample_values = samples.sample_values;
+
+    var washing = parseFloat(sampleMetadata.wfreq);
+    console.log(washing);
 
     console.log(otu_ids);
     console.log(otu_labels);
@@ -96,7 +112,7 @@ function buildCharts(sample) {
     Plotly.newPlot("bar", barData, barLayout);
 
 
-
+    //CREATES BUBBLE CHART
     //Creates a trace for bubble chart
     var bubbleData = [{
       x: otu_ids,
@@ -120,5 +136,27 @@ function buildCharts(sample) {
 
     //plots the bubble chart
     Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+
+    //CREATES GAUGE CHART
+    //creates a trace for the gauge chart
+    var gaugeData = [{
+      domain: { x: [0, 1], y: [0, 1] },
+      value: washing,
+      title: { text: "Belly Button Washing Frequency"},
+      type: "indicator",
+      mode: "gauge+number",
+      gauge: {
+        axis: {range: [null, 10], tickwidth: 1},
+        steps: [           
+        { range: [0, 2], color: "red" },
+        { range: [2, 4], color: "orange" },
+        { range: [4, 6], color: "yellow" },
+        { range: [6, 8], color: "limegreen" },
+        { range: [8, 10], color: "green" }]},
+    }];
+
+    var gaugeLayout = {width: 600, height: 500, margin: { t: 0, b: 0 }};
+
+    Plotly.newPlot("gauge", gaugeData, gaugeLayout);
   });
 }
