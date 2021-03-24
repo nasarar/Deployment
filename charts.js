@@ -72,7 +72,7 @@ function buildCharts(sample) {
 
     //  5. Create a variable that holds the first sample in the array.
     var samples = samplesArray[0];
-    
+
     // creates another variable to hold first sample in the metadata for the array
     var sampleMetadata = metadataArray[0];
 
