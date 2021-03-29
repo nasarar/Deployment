@@ -1,7 +1,7 @@
 # Deployment
 
 Using the samples.json dataset collected, a dashboard is produced showing 3 different charts.
-1. Bar Chart for Top 10 Bcacteria Samples
+1. Bar Chart for Top 10 Bacteria Samples
 2. Gauge Chart for Washing Frequency
 3. Bubble Chart for Each Bacteria Sampled
 
